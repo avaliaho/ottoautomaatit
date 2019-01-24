@@ -14,7 +14,6 @@ import org.apache.commons.csv.CSVRecord;
 
 public class Webservice extends HttpServlet {
 
-    // luokan muuttujat
     CSVFormat csvformaatti = null;
     URL polku = null;
     Reader tiedosto = null;
@@ -58,11 +57,7 @@ public class Webservice extends HttpServlet {
             }
 
         }
-        /*
-        *
-        * TÄMÄ
-        *
-         */
+        
         if (request.getParameter("postitoimipaikka") != null
                 && request.getParameter("sivu") != null) {
 
