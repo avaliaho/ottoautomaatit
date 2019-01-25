@@ -57,11 +57,11 @@ public class Webservice extends HttpServlet {
             }
 
         }
-
+        // this doesn't work with 'Mikkeli'
         if (request.getParameter("postitoimipaikka") != null
                 && request.getParameter("sivu") != null) {
-
             int sivu = Integer.valueOf(request.getParameter("sivu"));
+            String postitoimipaikka = request.getParameter("postitoimipaikka").toUpperCase();
             int indeksi = 0;
             int per_sivu = 100;
 
@@ -69,8 +69,7 @@ public class Webservice extends HttpServlet {
                     + "Postitoimipaikka,Sijaintipaikan tyyppi,Sijaintipaikka,Aukioloaika,"
                     + "Aukioloaika (lisätiedot)");
             for (CSVRecord automaatti : automaatit) {
-                if (Objects.equals(automaatti.get("Postitoimipaikka"),
-                        request.getParameterValues("postitoimipaikka")[0].toUpperCase())) {
+                if (Objects.equals(automaatti.get("Postitoimipaikka"), postitoimipaikka)) {
                     if (indeksi >= (sivu * per_sivu) && indeksi < (sivu + 1) * per_sivu) {
                         kirjoittaja.println(indeksi + ","
                                 + automaatti.get("Kohteen osoite") + ","
@@ -81,29 +80,8 @@ public class Webservice extends HttpServlet {
                                 + automaatti.get("Aukioloaika") + ","
                                 + automaatti.get("Aukioloaika (lisätiedot)"));
                     }
+                    indeksi += 1;
                 }
-                indeksi += 1;
-            }
-        }
-
-        if (request.getParameter("postitoimipaikka") != null
-                && request.getParameter("sivu") != null) {
-
-            int sivu = Integer.valueOf(request.getParameter("sivu"));
-            int indeksi = 0;
-            int per_sivu = 100;
-            for (CSVRecord automaatti2 : automaatit) {
-                if (indeksi >= (sivu * per_sivu) && indeksi < (sivu + 1) * per_sivu) {
-                    kirjoittaja.println(indeksi + ","
-                            + automaatti2.get("Kohteen osoite") + ","
-                            + automaatti2.get("Postinumero") + ","
-                            + automaatti2.get("Postitoimipaikka") + ","
-                            + automaatti2.get("Sijaintipaikan tyyppi") + ","
-                            + automaatti2.get("Sijaintipaikka") + ","
-                            + automaatti2.get("Aukioloaika") + ","
-                            + automaatti2.get("Aukioloaika (lisätiedot)"));
-                }
-                indeksi += 1;
             }
         }
 
