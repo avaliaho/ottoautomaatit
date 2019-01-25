@@ -55,9 +55,8 @@ public class Webservice extends HttpServlet {
                     indeksi += 1;
                 }
             }
-
         }
-        // this doesn't work with 'Mikkeli'
+        
         if (request.getParameter("postitoimipaikka") != null
                 && request.getParameter("sivu") != null) {
             int sivu = Integer.valueOf(request.getParameter("sivu"));
@@ -124,7 +123,6 @@ public class Webservice extends HttpServlet {
                             + automaatti.get("Aukioloaika (lisätiedot)"));
                 }
             }
-
         }
     }
 }
