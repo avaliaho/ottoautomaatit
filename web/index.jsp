@@ -12,22 +12,27 @@
         <h1>Ottoautomaatit</h1>
 
         <form method="get">
-            <input type="text" name="postitoimipaikka">
-            <input type="number" name="sivu">
+            Postitoimipaikka: <input type="text" name="postitoimipaikka">
             <input type="submit" name="haku">
         </form><br>
-        <%
-        
-        if (request.getParameter("haku") != null) {
-            String postitoimipaikka = request.getParameter("postitoimipaikka");
-            int sivu = Integer.valueOf(request.getParameter("sivu"));
-            Iterable<CSVRecord> automaatit = ottoautomaatti.haeAutomaatit(postitoimipaikka, sivu);
-            
-            for (CSVRecord automaatti: automaatit) {
-                out.println(automaatti);
+        <%            if (request.getParameter("haku") != null) {
+                String postitoimipaikka = request.getParameter("postitoimipaikka");
+                Iterable<CSVRecord> automaatit = ottoautomaatti.haeAutomaatit(postitoimipaikka, 0);
+                String merkkijono = "<table border='1px' cellpadding='3'><tr><th>Osoite</th><th>Sijaintipaikka</th><th>Aukioloaika</th></tr>";
+
+                for (CSVRecord automaatti : automaatit) {
+                    merkkijono += "<tr><td>" + automaatti.get("Kohteen osoite") + ", "
+                            + automaatti.get("Postinumero") + " " 
+                            + automaatti.get("Postitoimipaikka")
+                            + "</td><td>" + automaatti.get("Sijaintipaikan tyyppi") + ", "
+                            + automaatti.get("Sijaintipaikka") + "</td><td>"
+                            + automaatti.get("Aukioloaika") + "</td></tr>";
+                }
+
+                merkkijono += "</table>";
+                out.println(merkkijono);
             }
-        }
-        
+
         %>
     </body>
 </html>
