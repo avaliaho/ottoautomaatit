@@ -18,11 +18,11 @@ public class Client {
     protected CSVParser csvrakentaja = null;
     protected Iterable<CSVRecord> automaatit = null;
     protected long kokonaismaara = 0;
-    
+
     public long getKokonaismaara() {
         return this.kokonaismaara;
     }
-    
+
     public void setKokonaismaara(long koko) {
         this.kokonaismaara = koko;
     }
@@ -46,7 +46,7 @@ public class Client {
     public Iterable<CSVRecord> haeAutomaatit(String paikkakunta, long sivu) {
         try {
             if (paikkakunta == null) {
-                urli = new URL("http://localhost:8080/ottoautomaatit/webservice?sivu="+sivu);
+                urli = new URL("http://localhost:8080/ottoautomaatit/webservice?sivu=" + sivu);
                 lukija = new BufferedReader(new InputStreamReader(urli.openStream()));
                 automaatit = CSVFormat.EXCEL.withHeader().parse(lukija);
             } else {
@@ -60,6 +60,23 @@ public class Client {
             e.printStackTrace();
         }
         return automaatit;
+    }
+
+    public long getSivumaara(String postitoimipaikka) {
+        long sivumaara = 0;
+        try {
+            urli = new URL("http://localhost:8080/ottoautomaatit/webservice?postitoimipaikka="
+                    + URLEncoder.encode(postitoimipaikka, "UTF-8"));
+            lukija = new BufferedReader(new InputStreamReader(urli.openStream()));
+            automaatit = CSVFormat.EXCEL.withHeader().parse(lukija);
+            
+            for (CSVRecord automaatti : automaatit) {
+                sivumaara = Long.valueOf(automaatti.get("Indeksi"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sivumaara;
     }
 
 }
