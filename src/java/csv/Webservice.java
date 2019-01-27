@@ -32,8 +32,8 @@ public class Webservice extends HttpServlet {
         Iterable<CSVRecord> automaatit = CSVFormat.EXCEL.withHeader().parse(tiedosto);
 
         if (request.getParameter("postitoimipaikka") != null
-                && !request.getParameter("postitoimipaikka").isEmpty()
-                && request.getParameter("sivu") == null) {
+                && request.getParameter("sivu") == null
+                && request.getParameter("indeksi") == null) {
             String haku = request.getParameterValues("postitoimipaikka")[0];
 
             kirjoittaja.println("Indeksi,Kohteen osoite,Postinumero,"
@@ -56,7 +56,27 @@ public class Webservice extends HttpServlet {
                 }
             }
         }
-        
+
+        if (request.getParameter("postitoimipaikka") != null
+                && request.getParameter("sivu") == null
+                && request.getParameter("indeksi") != null) {
+            int indeksi = 0;
+            for (CSVRecord automaatti : automaatit) {
+                if (Objects.equals(indeksi, Integer.valueOf(request.getParameter("indeksi")))) {
+                    kirjoittaja.println(
+                            indeksi + ","
+                            + automaatti.get("Kohteen osoite") + ","
+                            + automaatti.get("Postinumero") + ","
+                            + automaatti.get("Postitoimipaikka") + ","
+                            + automaatti.get("Sijaintipaikan tyyppi") + ","
+                            + automaatti.get("Sijaintipaikka") + ","
+                            + automaatti.get("Aukioloaika") + ","
+                            + automaatti.get("Aukioloaika (lisätiedot)"));
+                }
+                indeksi += 1;
+            }
+        }
+
         if (request.getParameter("postitoimipaikka") != null
                 && request.getParameter("sivu") != null) {
             int sivu = Integer.valueOf(request.getParameter("sivu"));
