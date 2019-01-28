@@ -62,18 +62,23 @@ public class Webservice extends HttpServlet {
                 && request.getParameter("indeksi") != null) {
             int indeksi = 0;
             for (CSVRecord automaatti : automaatit) {
-                if (Objects.equals(indeksi, Integer.valueOf(request.getParameter("indeksi")))) {
-                    kirjoittaja.println(
-                            indeksi + ","
-                            + automaatti.get("Kohteen osoite") + ","
-                            + automaatti.get("Postinumero") + ","
-                            + automaatti.get("Postitoimipaikka") + ","
-                            + automaatti.get("Sijaintipaikan tyyppi") + ","
-                            + automaatti.get("Sijaintipaikka") + ","
-                            + automaatti.get("Aukioloaika") + ","
-                            + automaatti.get("Aukioloaika (lisätiedot)"));
+                if (Objects.equals(automaatti.get("Postitoimipaikka"),
+                        request.getParameterValues("postitoimipaikka")[0].toUpperCase())) {
+                    if (Objects.equals(indeksi, Integer.valueOf(request.getParameter("indeksi")))) {
+                        kirjoittaja.println(
+                                indeksi + ","
+                                + automaatti.get("Kohteen osoite") + ","
+                                + automaatti.get("Postinumero") + ","
+                                + automaatti.get("Postitoimipaikka") + ","
+                                + automaatti.get("Sijaintipaikan tyyppi") + ","
+                                + automaatti.get("Sijaintipaikka") + ","
+                                + automaatti.get("Aukioloaika") + ","
+                                + automaatti.get("Aukioloaika (lisätiedot)") + ","
+                                + automaatti.get("Koordinaatti LAT") + ","
+                                + automaatti.get("Koordinaatti LON"));
+                    }
+                    indeksi += 1;
                 }
-                indeksi += 1;
             }
         }
 
@@ -130,17 +135,20 @@ public class Webservice extends HttpServlet {
                 }
 
             } else {
-                kirjoittaja.println("Kohteen osoite,Postinumero,"
+                kirjoittaja.println("Indeksi,Kohteen osoite,Postinumero,"
                         + "Postitoimipaikka,Sijaintipaikan tyyppi,Sijaintipaikka,Aukioloaika,"
                         + "Aukioloaika (lisätiedot)");
+                int indeksi = 0;
                 for (CSVRecord automaatti : automaatit) {
-                    kirjoittaja.println(automaatti.get("Kohteen osoite") + ","
+                    kirjoittaja.println(indeksi + ","
+                            + automaatti.get("Kohteen osoite") + ","
                             + automaatti.get("Postinumero") + ","
                             + automaatti.get("Postitoimipaikka") + ","
                             + automaatti.get("Sijaintipaikan tyyppi") + ","
                             + automaatti.get("Sijaintipaikka") + ","
                             + automaatti.get("Aukioloaika") + ","
                             + automaatti.get("Aukioloaika (lisätiedot)"));
+                    indeksi++;
                 }
             }
         }
